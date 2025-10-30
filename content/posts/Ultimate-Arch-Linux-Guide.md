@@ -1,11 +1,11 @@
 ---
 title: "Ultimate Arch Linux Installation Guide"
 description: "I use Arch btw"
-date: 2025-01-31
+date: 2025-09-02
 author: Junovell
 toc: true
 math: false
-isStarred: false
+isStarred: true
 tags: ["guides", "linux"]
 ---
 
@@ -13,7 +13,7 @@ tags: ["guides", "linux"]
 
 An ultimate guide for Arch linux, from a black screen to streaming bloons TD 6 to your friends on discord.
 
-> This guide took a few weeks to write, so the tone might feel different from section to another.
+> You might notice the style of writing changes from section to section, that's because this guide took me a couple of weeks to finish
 
 ## Hardware
 
@@ -31,7 +31,7 @@ Download the Arch ISO from [the official site](<https://archlinux.org/download/>
 
 ## Installation
 
-Read the [official Installation guide](<https://wiki.archlinux.org/title/Installation_guide>) on the Arch wiki until you reach the [**Installation** section](<https://wiki.archlinux.org/title/Installation_guide#Installation>) then you continue with my guide.
+Read the [official Installation guide](<https://wiki.archlinux.org/title/Installation_guide>) on the Arch wiki until you reach the [**Installation** section](<https://wiki.archlinux.org/title/Installation_guide#Installation>) then you can continue with my guide.
 
 ```sh
 pacstrap -K /mnt base base-devel linux linux-firmware git networkmanager nano efibootmgr sudo

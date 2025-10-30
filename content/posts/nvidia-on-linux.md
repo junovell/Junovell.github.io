@@ -1,11 +1,11 @@
 ---
 title: "The struggles of an Nvidia user on Linux"
 description: "How to setup Nvidia drivers on Arch Linux"
-date: 2025-01-31
+date: 2025-09-04
 author: Junovell
 toc: true
 math: false
-isStarred: false
+isStarred: true
 tags: ["guides", "linux", "nvidia"]
 ---
 

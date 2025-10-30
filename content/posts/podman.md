@@ -1,7 +1,7 @@
 ---
 title: "You're telling me there's a MAN in that POD???"
 description: "How to install and use Podman on Arch"
-date: 2025-01-31
+date: 2025-09-16
 author: Junovell
 toc: true
 math: false

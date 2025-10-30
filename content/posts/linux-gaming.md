@@ -1,7 +1,7 @@
 ---
 title: "Gaming on linux in big 2025"
 description: "a guide on how to setup linux for gaming"
-date: 2025-01-31
+date: 2025-09-08
 author: Junovell
 toc: true
 math: false
