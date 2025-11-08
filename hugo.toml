@@ -1,4 +1,4 @@
-title = "Juno's blog"
+title = "Juno in Cyberland"
 baseURL = 'https://Junovell.github.io/'
 
 # This is what goes in <html lang="">
@@ -74,12 +74,13 @@ theme = "hugo-blog-awesome"
     weight = 30
 
 [Languages.en-gb.params]
-  sitename = "Juno's blog"
-  defaultColor = "dark" # set color mode: dark, light, auto
+  sitename = "Juno in Cyberland"
+  # set color mode: dark, light, auto
   # Setting it to 'auto' applies the color scheme based on the visitor's device color preference.If you don't specify anything, ignore this parameter, or leave it blank,
   # the default value is set to 'auto'.
+  defaultColor = "dark"
   # for the html meta tag
-  description = "A personal archive of what I learn, fix, break, and think — mostly about software. Written by junovell."
+  description = "Deep-dive guides on Linux and coding — focused on the overlooked details, practical fixes, and real-world setups that most people skip."
   mainSections = ['posts']
   toc = true # set to false to disable table of contents 'globally'
   tocOpen = false # set to true to open table of contents by default
@@ -100,8 +101,8 @@ theme = "hugo-blog-awesome"
   avatar = "avatar.png" # put the file in assets folder; also ensure that image has same height and width
   # Note: image is not rendered if the resource(avatar image) is not found. No error is displayed.
   name = "Junovell"
-  intro = "Stuff that works for me"
-  description = "Notes, guides, and thoughts on the things I build, break, or fix — Linux, open source, coding, and everything in between."
+  intro = "Juno in Cyberland"
+  description = "Deep-dive guides on Linux and coding — focused on the overlooked details, practical fixes, and real-world setups that most people skip."
 
 # Allow to override webmanifest options
 [Languages.en-gb.params.webmanifest]
