@@ -56,9 +56,79 @@ And enable the network manager
 systemctl enable NetworkManager
 ```
 
+### Bootloader
+
+On Linux you have [many options for booting your system](<https://wiki.archlinux.org/title/Arch_boot_process#Feature_comparison>), but for this guide I'll only go through **GRUB** and **EFI Stub**.
+
+- **GRUB** is a popular bootloader that provides a UI at boot time, allowing you to select from multiple OSes. It supports theming, fallback configurations, and advanced options like chainloading other bootloaders. GRUB is configured through a configuration file (`grub.cfg`), which can be generated or modified manually.
+- **EFI Stub** uses your Linux kernel as a direct EFI executable. When using EFI stub, the kernel is loaded directly by the UEFI firmware, making the boot process faster. However, it lacks a graphical user interface or boot menu, and switching between different operating systems requires configuring the boot options directly in the BIOS.
+
+> If you're still new just use **GRUB** and enjoy theming it, if you want your PC to boot as fast as possible then use **EFI Stub**
+
+Regardless of which loader you use you need to install `efibootmgr`.
+
+#### GRUB
+
+Although there are other boot managers, grub has the most features and can be themed
+
+Install `grub`.
+
+```sh
+$ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+$ nano /etc/default/grub # enable OS_PROBER and verbose logging
+$ grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+> If you have an MSI motherboad then you need to add `--removable` to the `grub-install` command.
+
+**Then reboot.**
+Source: <https://wiki.archlinux.org/title/GRUB#Installation>
+
+#### EFI Stub
+
+To create an EFI entry for a kernel:
+
+```sh
+efibootmgr --create --disk /dev/sdX --part <Y> --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=UUID=<drive-uuid> rw loglevel=3 verbose initrd=\initramfs-linux.img'
+```
+
+- `/dev/sdX` is the drive containing your boot partition
+- `<Y>` is the boot partition's number
+- `<drive-uuid>` is the UUID of your root partition, you can find it with `lsblk -o "NAME,UUID,MOUNTPOINTS"`
+
+an example with my system:
+
+```sh
+sudo efibootmgr --create --disk /dev/sda --part 1 --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=e1f5c537-cb17-4d24-98c9-00b5085856b4 rw loglevel=3 verbose initrd=\initramfs-linux.img'
+```
+
+**Then reboot.**
+
+Source: <https://wiki.archlinux.org/title/EFI_boot_stub#Using_UEFI_directly>
+
+#### Deleting Bootloader
+
+If you have multiple bootloaders configured and want to delete the ones you don't need anymore you can delete them.
+
+First list your bootloaders
+
+```sh
+$ efibootmgr
+# Boot0000* Arch Linux Stub HD(1,GPT,e1f5c537-cb17-4d24-98c9-00b5085856b4,0x800,0x200000)/\vmlinuz-linux72006f006f0074003d005500550049004400...
+# Boot0001* GRUB HD(1,GPT,e1f5c537-cb17-4d24-98c9-00b5085856b4,0x800,0x200000)/\EFI\GRUB\grubx64.efi
+```
+
+Then delete the bootloader using it's id, for example I'll delete the GRUB entry:
+
+> while the previous command lists GRUB as `Boot0001`, when deleting you only need to write the number `1`.
+
+```sh
+sudo efibootmgr --delete-bootnum --bootnum "1"
+```
+
 ### Account
 
-Set up your PC name
+Set up your PC's Hostname, this is a [label that is assigned to a device connected to a network that is used to identify the device.](<https://en.wikipedia.org/wiki/Hostname>)
 
 ```sh
 echo pc-name > /etc/hostname
@@ -69,6 +139,10 @@ echo pc-name > /etc/hostname
 I prefer [fish shell](<https://fishshell.com/>) because it's *fish* and *funny*, so I’ll create my user with that as the *default shell*.
 
 > Fish shell also has some [other features](<https://fishshell.com/docs/current/interactive.html>) but they're not as important.
+
+I prefer using Fish shell because, well, it's hooked me with its user-friendly features—and it's just fin-tastic.
+
+> Sure, Fish shell has a bunch of other cool features, but let's be honest... it's mostly about being the catch of the day.
 
 ```sh
 $ passwd
@@ -91,69 +165,6 @@ If you want only your user to have sudo access then you can re-write the live bu
 ```txt
 melty ALL=(ALL:ALL) ALL
 ```
-
-### Bootloader
-
-On Arch you have 2 options for booting your system **GRUB** and **EFI Stub**.
-
-- **GRUB** allows for multiple boot entries (multiple OS) on the same drive, theming, fallbacks and has a relatively easy configuration file.
-- **EFI Stub** is using your kernel as an EFI executable bypassing the need for a Bootloader, but limiting you to a single OS for each drive
-
-If you're still new just use **GRUB** and enjoy theming it, if you want your PC to boot as fast as possible then use **EFI Stub**
-
-#### GRUB
-
-Although there are other boot managers, grub has the most features and can be themed
-
-install `grub` and `efibootmgr`
-
-```sh
-$ grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-$ nano /etc/default/grub # enable OS_PROBER and verbose logging
-$ grub-mkconfig -o /boot/grub/grub.cfg
-```
-
-> *If you have an MSI motherboad then you need to add `--removable` to `grub-install`*
-
-**Then reboot.**
-
-#### EFI Stub
-
-You need to install `efibootmgr` for this
-
-An example of booting `linux` from a SATA drive
-
-```sh
-$ efibootmgr --create --disk /dev/sdX --part <Y> --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=UUID=764c6790-211e-4mm2-a818-8557fg1b4a16 rw loglevel=3 verbose initrd=\initramfs-linux.img'
-```
-
-- `/dev/sdX` is the drive containing your boot partition
-- `<Y>` is the boot partition's number
-- `root=UUID=` is the UUID of your root partition, you can find it with `lsblk -o "NAME,UUID,MOUNTPOINTS"`
-
-Then reboot.
-
-Source: <https://wiki.archlinux.org/title/EFI_boot_stub#Using_UEFI_directly>
-
-#### Deleting Bootloader
-
-If you have multiple bootloaders configured and want to delete the ones you don't need anymore you can delete them.
-
-1. list your bootloaders
-
-```sh
-$ efibootmgr
-# Boot0000* Arch Linux Stub HD(1,GPT,0g85caf2-fdd3-4d93-8cb7-06aa72458ec5,0x800,0x200000)/\vmlinuz-linux72006f006f0074003d005500550049004400...
-# Boot0001* GRUB HD(1,GPT,0g85caf2-fdd3-4d93-8cb7-06aa72458ec5,0x800,0x200000)/\EFI\GRUB\grubx64.efi
-```
-
-2. delete the bootloader using it's id
-
-```sh
-sudo efibootmgr --delete-bootnum --bootnum "1"
-```
-
-Note that while the first command lists GRUB as `Boot0001`, when deleting you only need to write the number `1`.
 
 ### Install yay
 
@@ -206,7 +217,7 @@ $ yay # update the system
 
 ### Add a GPG server
 
-This is not required, but will save you time later on
+This is required to verify some packages on the AUR
 
 ```sh
 $ mkdir ~/.gnupg
