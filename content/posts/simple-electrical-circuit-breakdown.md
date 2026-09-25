@@ -107,6 +107,8 @@ but what does that mean? Essentially it's a two-in-one device. It does standard 
 
 But let's not get ahead of ourselves, you may have missed it, or even ignored it, but right above the breakers there's a horizontal line with the label "ICC = 10KA" on top of it
 
+![alt text](simple-electrical-circuit-breakdown/busbar-diagram.png)
+
 Let's start with the line first, there are 2 possible explanations of it that i got from 2 different sources
 
 1. My electrical engineer friend said that the breakers are connected in parallel one by one from the main breaker, so each small breaker takes 2 wires from the main one (any live wire and one neutral) then a branch is created to the next breaker, thus connecting them manually one by one in parallel.
@@ -121,3 +123,14 @@ Personally i don't quite understand how the Busbar works exactly, but simply loo
 
 Finally What does **ICC = 10KA** mean? ICC stands for **Short-Circuit Current** (*Courant de Court-circuit*). The "10kA" (10,000 Amps) is a massive safety rating telling us the maximum amount of fault current these breakers can safely interrupt without exploding or catching fire if a catastrophic dead short happens right at the source.
 
+### 6. Ground 0
+
+![alt text](simple-electrical-circuit-breakdown/ground-diagram.png)
+
+Finally all circuit breakers are connect to a dotted line that ends with the symbol for ground meaning that this circuit is secured with a ground connection to absorb all the extra power in the case of a power surge.
+
+### 7. The Mysterious Breaker
+
+![alt text](simple-electrical-circuit-breakdown/mystery-breaker.png)
+
+At the bottom of the actual switchboard there's another 3-phase breaker that doesn't appear on the diagram, this has to be an extension that was made later on after the switchboard was installed.
