@@ -33,6 +33,8 @@ Download the Arch ISO from [the official site](<https://archlinux.org/download/>
 
 Read the [official Installation guide](<https://wiki.archlinux.org/title/Installation_guide>) on the Arch wiki until you reach the [**Installation** section](<https://wiki.archlinux.org/title/Installation_guide#Installation>) then you can continue with my guide.
 
+Note: if you're using a few months old ISO then you should first run `pacman-key --refresh-keys`
+
 ```sh
 pacstrap -K /mnt base base-devel linux linux-firmware git networkmanager nano efibootmgr sudo
 ```
@@ -43,6 +45,13 @@ You can also add:
 - `intel-ucode` if you have an Intel cpu
 - `fish` or `zsh` if you want a different shell
 - `os-prober` for dual-boot if you have a Windows installation on the system
+
+
+generate the filesystem's scheme
+
+```sh
+genfstab -U /mnt >> /mnt/etc/fstab
+```
 
 Then chroot into the system
 
@@ -81,7 +90,6 @@ $ grub-mkconfig -o /boot/grub/grub.cfg
 
 > If you have an MSI motherboad then you need to add `--removable` to the `grub-install` command.
 
-**Then reboot.**
 Source: <https://wiki.archlinux.org/title/GRUB#Installation>
 
 #### EFI Stub
@@ -165,6 +173,8 @@ If you want only your user to have sudo access then you can re-write the live bu
 ```txt
 melty ALL=(ALL:ALL) ALL
 ```
+
+**Reboot the system now**
 
 ### Install yay
 
@@ -811,6 +821,12 @@ Source: <https://wiki.hypr.land/Hypr-Ecosystem/xdg-desktop-portal-hyprland/>
 ```
 
 ```diff
+LDFLAGS="-Wl,-O1 -Wl,--sort-common -Wl,--as-needed -Wl,-z,relro -Wl,-z,now \
+-         -Wl,-z,pack-relative-relocs"
++         -Wl,-z,pack-relative-relocs -fuse-ld=mold -Wl,--separate-debug-file""
+```
+
+```diff
 #-- Make Flags: change this for DistCC/SMP systems
 - #MAKEFLAGS="-j2"
 + MAKEFLAGS="--jobs=$(nproc)"
@@ -824,6 +840,15 @@ Source: <https://wiki.hypr.land/Hypr-Ecosystem/xdg-desktop-portal-hyprland/>
 ```diff
 - COMPRESSZST=(zstd -c -T0 -)
 + COMPRESSZST=(zstd -c -T0 --auto-threads=logical --ultra -22 -)
+...
+- PKGEXT='.pkg.tar.gz'
++ PKGEXT='.pkg.tar.zst'
+```
+
+ /etc/makepkg.conf.d/rust.conf
+```diff
+- RUSTFLAGS="-C force-frame-pointers=yes"
++ RUSTFLAGS="-C force-frame-pointers=yes -C target-cpu=native -C link-arg=-fuse-ld=mold"
 ```
 
 Then rebuild your manually installed packages with
