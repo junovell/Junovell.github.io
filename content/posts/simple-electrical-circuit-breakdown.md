@@ -90,3 +90,34 @@ Looking at the table at the bottom of the diagram, in the "ARRIVE GENERALE" colu
 - Cable Section: 5x10 mm² (meaning a 5-conductor cable with three phases, neutral, and earth with a 10mm² cross-section to handle that 15 kW load safely)
 
 ### 4. The Council of the 11 Single-Phase Breakers
+
+Right after our main 3-phase switch, the power doesn't just go straight to a single output. Instead, it gets chopped up and distributed. On the schematic, right next to each other from left to right, sit 11 single-phase breakers.
+
+![alt text](simple-electrical-circuit-breakdown/11-breaker-plus-mysterios-breaker.png)
+
+what are they for you ask? simple, it's the same concept in programming as "separation of concerns". While the main breaker controls the whole board, these 11 individual breakers step down the power to feed specific zones—like different rows of classroom benches, lighting circuits, or individual outlet groups. for example we can already see in the description table 2 of them are going for air conditioning. So if a student creates a short circuit on bench number 4, only that specific breaker trips, leaving the rest of the classroom with power (and saving us from the awful heatwave this summer).
+
+The Big Security Upgrade: RCBOs (Disjoncteurs Différentiels)
+
+you should have also noticed that these breakers don't use the same symbol as the main one, that's the symbol of an **RCBO** (Residual Current Circuit Breaker with Overcurrent protection) or *disjoncteur différentiel* in french.
+
+but what does that mean? Essentially it's a two-in-one device. It does standard overcurrent/short-circuit protection (like a normal breaker), plus it monitors the balance between the phase and neutral current to protect humans from electrocution (acting like a residual current device/RCD). If even a tiny bit of current (like 30mA) leaks out—say, someone touches a live wire it trips instantly to save a life.
+
+### 5. The Line
+
+But let's not get ahead of ourselves, you may have missed it, or even ignored it, but right above the breakers there's a horizontal line with the label "ICC = 10KA" on top of it
+
+Let's start with the line first, there are 2 possible explanations of it that i got from 2 different sources
+
+1. My electrical engineer friend said that the breakers are connected in parallel one by one from the main breaker, so each small breaker takes 2 wires from the main one (any live wire and one neutral) then a branch is created to the next breaker, thus connecting them manually one by one in parallel.
+
+![alt text](simple-electrical-circuit-breakdown/home-switchboard-internal-wiring.png)
+
+2. GEMINI said that it could be a **Busbar** (or *Peigne d'alimentation* in french) which is a large piece of copper connected that takes power from the main breaker and has the small breakers attached to it.
+
+![alt text](simple-electrical-circuit-breakdown/industrial-switchboard-wiring.png)
+
+Personally i don't quite understand how the Busbar works exactly, but simply looking up images for it on *DuckDuckGo* shows images of industrial switchboards, so i'm leaning into my friend's explanation for a classroom's switchboard.
+
+Finally What does **ICC = 10KA** mean? ICC stands for **Short-Circuit Current** (*Courant de Court-circuit*). The "10kA" (10,000 Amps) is a massive safety rating telling us the maximum amount of fault current these breakers can safely interrupt without exploding or catching fire if a catastrophic dead short happens right at the source.
+
